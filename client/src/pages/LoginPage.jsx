@@ -12,11 +12,17 @@ export default function LoginPage() {
           ev.preventDefault();
           try {
                const { data } = await axios.post("/login", { email, password });
-               setUser(data);
-               setRedirect("/");
-               alert("Login successful");
+               console.log(data);
+               if (data === "NotFound") {
+                    setRedirect(null);
+                    alert("Login failed");
+               } else {
+                    setUser(data);
+                    setRedirect("/");
+                    alert("Login successful");
+               }
           } catch (error) {
-               alert("Login failed");
+               alert("Wrong Credentials, Please check Login info");
           }
      }
 

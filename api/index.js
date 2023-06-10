@@ -120,10 +120,10 @@ app.post("/api/login", async (req, res) => {
                     }
                );
           } else {
-               res.status(422).json("pass not ok");
+               res.status(422).json("PassNotOk");
           }
      } else {
-          res.json("Not found");
+          res.json("NotFound");
      }
 });
 
