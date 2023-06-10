@@ -8,8 +8,8 @@ export default function PlaceGallery({ place }) {
           return (
                <div className="absolute inset-0 bg-black text-white  min-h-screen">
                     <div className="bg-black p-8 grid gap-4">
-                         <div className="flex grid grid-cols-[2fr_1fr]">
-                              <h2 className="text-3xl =">
+                         <div className="flex grid grid-cols-[2fr_1fr] md:grid-cols-[2fr_1fr] lg:grid-cols-[2fr_1fr]">
+                              <h2 className="text-3xl px-0 lg:px-40 md:px-20 ">
                                    Photos of {place.title}
                               </h2>
                               <button
@@ -33,20 +33,25 @@ export default function PlaceGallery({ place }) {
                                    Back
                               </button>
                          </div>
-
-                         {place?.addedPhotos?.length > 0 &&
-                              place.addedPhotos.map((photo) => (
-                                   <div>
-                                        <Image src={photo} alt="" />
-                                   </div>
-                              ))}
+                         <div className="grid grid-cols-2 gap-4 px-0 lg:px-40 md:px-20">
+                              {place?.addedPhotos?.length > 0 &&
+                                   place.addedPhotos.map((photo) => (
+                                        <div className="w-full h-full">
+                                             <Image
+                                                  src={photo}
+                                                  alt=""
+                                                  className="w-full h-full object-cover"
+                                             />
+                                        </div>
+                                   ))}
+                         </div>
                     </div>
                </div>
           );
      }
      return (
-          <div className="relative">
-               <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
+          <div className=" p-5 relative">
+               <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden md:grid-cols-[2fr_1fr] lg:grid-cols-[2fr_1fr] ">
                     <div>
                          {place.addedPhotos?.[0] && (
                               <div>
@@ -79,7 +84,7 @@ export default function PlaceGallery({ place }) {
                                              }
                                              className="cursor-pointer aspect-square object-cover relative top-2"
                                              src={place.addedPhotos[2]}
-                                             alt="s"
+                                             alt=""
                                         />
                                    )}
                               </div>
@@ -89,7 +94,7 @@ export default function PlaceGallery({ place }) {
 
                <button
                     onClick={() => setshowAllPhotos(true)}
-                    className="cursor-pointer flex items-center gap-1 absolute bottom-2 right-2 py-1.5 px-2 bg-white rounded-xl shadow shadow-md shadow-gray-500 bg-opacity-70"
+                    className="cursor-pointer flex items-center gap-1 absolute bottom-14 right-14 py-1.5 px-2 bg-white rounded-xl shadow shadow-md shadow-gray-500 bg-opacity-70"
                >
                     <More />
                     <span className="font-semibold">Show all photos</span>
