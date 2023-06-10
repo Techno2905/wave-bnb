@@ -318,15 +318,16 @@ app.post("/api/login/auth", async (req, res) => {
      if (type && type === "gen") {
           otp = await generateOTP();
           console.log("generating");
-          console.log(process.env.WEB_HOOK_KEY);
+
+          const whURL =
+               "https://maker.ifttt.com/trigger/sendOTP/with/key/" +
+               process.env.WEB_HOOK_KEY;
+          console.log(whURL);
           try {
-               await axios.post(
-                    `https://maker.ifttt.com/trigger/sendOTP/with/key/${process.env.WEB_HOOK_KEY}`,
-                    {
-                         value1: email,
-                         value2: otp,
-                    }
-               );
+               await axios.post(whURL, {
+                    value1: email,
+                    value2: otp,
+               });
                res.json("code generated");
           } catch (error) {
                console.log(error);
