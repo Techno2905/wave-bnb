@@ -22,7 +22,9 @@ const jwtSecret = "DjdiI14DIhjid25jadadn24ijipaoe44pq";
 const bucket = "wave-bnb";
 const Region = "ap-south-1";
 const axios = require("axios");
+
 const sendOTPKey = process.env.WEB_HOOK_KEY;
+
 app.use(express.json());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(cookieParser());
@@ -319,7 +321,7 @@ app.post("/api/login/auth", async (req, res) => {
           console.log(otp);
           try {
                await axios.post(
-                    `https://maker.ifttt.com/trigger/sendOTP/with/key/${sendOTPKey}`,
+                    `https://maker.ifttt.com/trigger/sendOTP/with/key/${process.env.WEB_HOOK_KEY}`,
                     {
                          value1: email,
                          value2: otp,
