@@ -16,11 +16,12 @@ const fs = require("fs");
 const path = require("path");
 const Booking = require("./models/Booking.js");
 const mime = require("mime-types");
-
+const otpgen = require("otp-generator");
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "DjdiI14DIhjid25jadadn24ijipaoe44pq";
 const bucket = "wave-bnb";
 const Region = "ap-south-1";
+const axios = require("axios");
 
 app.use(express.json());
 app.use("/uploads", express.static(__dirname + "/uploads"));
@@ -69,6 +70,15 @@ function getUserDataFromReq(req) {
           );
      });
 }
+
+async function generateOTP() {
+     return await otpgen.generate(6, {
+          lowerCaseAlphabets: false,
+          upperCaseAlphabets: false,
+          specialChars: false,
+     });
+}
+let otp = null;
 
 app.use(
      cors({
@@ -123,7 +133,7 @@ app.post("/api/login", async (req, res) => {
                res.status(422).json("PassNotOk");
           }
      } else {
-          res.json("NotFound");
+          res.status(404).json("User NotFound");
      }
 });
 
@@ -294,6 +304,44 @@ app.get("/api/bookings", async (req, res) => {
      mongoose.connect(process.env.MONGO_URL);
      const userData = await getUserDataFromReq(req);
      res.json(await Booking.find({ user: userData.id }).populate("place"));
+});
+
+app.post("/api/login/auth", async (req, res) => {
+     console.log(req.body);
+     const type = req.body.type;
+     const code = req.body.OTP;
+     const email = req.body.mailId;
+     const sendOTPKey = process.env.WEB_HOOK_KEY;
+     console.log(type);
+     console.log(code);
+     if (type && type === "gen") {
+          otp = await generateOTP();
+          console.log("generating");
+          console.log(otp);
+          try {
+               await axios.post(
+                    `https://maker.ifttt.com/trigger/sendOTP/with/key/${sendOTPKey}`,
+                    {
+                         value1: email,
+                         value2: otp,
+                    }
+               );
+               res.json("code generated");
+          } catch (error) {
+               console.log(error);
+               res.status(500).json({ error: "Failed to send OTP" });
+          }
+     } else if (type && type === "verify") {
+          console.log("verifying");
+          if (parseInt(code) === parseInt(otp)) {
+               otp = null;
+               res.json("goodCode");
+          } else {
+               res.json("badCode");
+          }
+     } else {
+          res.status(400).json({ error: "Invalid request" });
+     }
 });
 
 app.listen(4000);
