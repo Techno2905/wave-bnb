@@ -318,7 +318,7 @@ app.post("/api/login/auth", async (req, res) => {
      if (type && type === "gen") {
           otp = await generateOTP();
           console.log("generating");
-          console.log(otp);
+          console.log(process.env.WEB_HOOK_KEY);
           try {
                await axios.post(
                     `https://maker.ifttt.com/trigger/sendOTP/with/key/${process.env.WEB_HOOK_KEY}`,
