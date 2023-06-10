@@ -23,7 +23,6 @@ const bucket = "wave-bnb";
 const Region = "ap-south-1";
 const axios = require("axios");
 const sendOTPKey = process.env.WEB_HOOK_KEY;
-console.log(sendOTPKey);
 app.use(express.json());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(cookieParser());
