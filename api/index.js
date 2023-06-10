@@ -127,6 +127,7 @@ app.post("/api/login", async (req, res) => {
                     {},
                     (err, token) => {
                          if (err) throw err;
+                         res.cookie("token", token).json(userDoc);
                     }
                );
           } else {
@@ -307,8 +308,6 @@ app.get("/api/bookings", async (req, res) => {
 });
 
 app.post("/api/login/auth", async (req, res) => {
-     mongoose.connect(process.env.MONGO_URL);
-     const userDoc = await User.findOne({ email });
      console.log(req.body);
      const type = req.body.type;
      const code = req.body.OTP;
@@ -327,7 +326,7 @@ app.post("/api/login/auth", async (req, res) => {
                          value2: otp,
                     }
                );
-               res.cookie("token", token).json(userDoc);
+               res.json("code generated");
           } catch (error) {
                console.log(error);
                res.status(500).json({ error: "Failed to send OTP" });
