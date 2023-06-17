@@ -6,7 +6,7 @@ import Icon from "./assets/icon.jsx";
 export default function Header() {
      const { user } = useContext(UserContext);
      return (
-          <header className=" flex lg:justify-between sm:items-start ">
+          <header className=" flex lg:justify-between sm:items-start sm:gap-4">
                <Link to={"/"} className="flex items-center gap-1">
                     <Icon />
                     <span className="font-bold text-xl">wavebnb</span>
