@@ -12,7 +12,7 @@ export default function LoginPage() {
           ev.preventDefault();
           try {
                const { data } = await axios.post("/login", { email, password });
-               setUser(data);
+
                setReqOTP(true);
           } catch (error) {
                alert("Wrong Credentials, Please check Login info");
@@ -41,6 +41,7 @@ export default function LoginPage() {
           try {
                const { data } = await axios.post("/login/auth", { type, OTP });
                if (data === "goodCode") {
+                    setUser(data);
                     setRedirect("/");
                     alert("Login successful");
                     setReqOTP(false);
