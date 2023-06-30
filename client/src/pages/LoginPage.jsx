@@ -8,12 +8,11 @@ export default function LoginPage() {
      const [redirect, setRedirect] = useState(null);
      const { setUser } = useContext(UserContext);
      const [reqOTP, setReqOTP] = useState(false);
-     const { userData, setUserData } = useState();
      async function handleLoginSubmit(ev) {
           ev.preventDefault();
           try {
                const { data } = await axios.post("/login", { email, password });
-               setUserData(data);
+
                setReqOTP(true);
           } catch (error) {
                alert("Wrong Credentials, Please check Login info");
@@ -42,7 +41,7 @@ export default function LoginPage() {
           try {
                const { data } = await axios.post("/login/auth", { type, OTP });
                if (data === "goodCode") {
-                    setUser(userData);
+                    setUser(data);
                     setRedirect("/");
                     alert("Login successful");
                     setReqOTP(false);
